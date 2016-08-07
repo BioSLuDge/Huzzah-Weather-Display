@@ -31,16 +31,30 @@ Credits for parts of this code go to Mike Rankin. Thank you so much for sharing!
 
 
 
-SSD1306::SSD1306(int i2cAddress, int sda, int sdc)
+SSD1306::SSD1306(int i2cAddress, int rst)
 {
   myI2cAddress = i2cAddress;
-  mySda = sda;
-  mySdc = sdc;
+  myRst = rst;
 }
 
-void SSD1306::init() {
-  Wire.begin(mySda, mySdc);
-  Wire.setClock(250000);
+void SSD1306::init(bool reset) {
+  Wire.begin();
+
+  if ((reset) && (myRst >= 0)) {
+    // Setup reset pin direction (used by both SPI and I2C)
+    pinMode(myRst, OUTPUT);
+    digitalWrite(myRst, HIGH);
+    // VDD (3.3V) goes high at start, lets just chill for a ms
+    delay(1);
+    // bring reset low
+    digitalWrite(myRst, LOW);
+    // wait 10ms
+    delay(10);
+    // bring out of reset
+    digitalWrite(myRst, HIGH);
+    // turn on VCC (9V?)
+  }
+
   sendInitCommands();
   resetDisplay();
 }
@@ -196,7 +210,7 @@ void SSD1306::drawXbm(int x, int y, int width, int height, const char *xbm) {
 
 void SSD1306::sendCommand(unsigned char com)
 {
-  //Wire.begin(mySda, mySdc);
+  //Wire.begin();
   Wire.beginTransmission(myI2cAddress);     //begin transmitting
   Wire.write(0x80);                          //command mode
   Wire.write(com);

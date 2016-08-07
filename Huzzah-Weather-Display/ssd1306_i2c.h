@@ -36,8 +36,7 @@ class SSD1306 {
 
 private:
    int myI2cAddress;
-   int mySda;
-   int mySdc;
+   int myRst;
    uint8_t buffer[128 * 64 / 8];
    bool myIsFontScaling2x2 = false;
    int myFrameState = 0;
@@ -52,8 +51,8 @@ private:
    
 public:
    // Empty constructor
-   SSD1306(int i2cAddress, int sda, int sdc);
-   void init();
+   SSD1306(int i2cAddress, int rst);
+   void init(bool reset);
    void resetDisplay(void);
    void reconnect(void);
    void displayOn(void);

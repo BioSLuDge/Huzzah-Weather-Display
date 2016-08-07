@@ -32,9 +32,7 @@ See more at http://blog.squix.ch
 #include <ESP8266WiFi.h>
 #include "WeatherClient.h"
 
-#define SDA 14
-#define SCL 12
-//#define RST 2
+#define RST 14
 
 #define I2C 0x3D
 
@@ -51,9 +49,13 @@ See more at http://blog.squix.ch
 // Initialize the oled display for address 0x3c
 // 0x3D is the adafruit address....
 // sda-pin=14 and sdc-pin=12
-SSD1306 display(I2C, SDA, SCL);
+SSD1306 display(I2C, RST);
 WeatherClient weather;
 Ticker ticker;
+
+void drawFrame1(int x, int y);
+void drawFrame2(int x, int y);
+void drawFrame3(int x, int y);
 
 // this array keeps function pointers to all frames
 // frames are the single views that slide from right to left
@@ -89,7 +91,7 @@ void setup() {
   //ESP.wdtDisable();
 
   // initialize display
-  display.init();
+  display.init(false);
   display.flipScreenVertically();
   // set the drawing functions
   display.setFrameCallbacks(3, frameCallbacks);
