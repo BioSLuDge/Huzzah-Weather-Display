@@ -28,7 +28,7 @@ See more at http://blog.squix.ch
 
 void WeatherClient::updateWeatherData(String domainName, String apiKey, double lat, double lon) {
   WiFiClient client;
-  const int httpPort = 80;
+  const int httpPort = 8888;
 
   Serial.print("Connecting to server: ");
   Serial.println(domainName);
@@ -40,7 +40,7 @@ void WeatherClient::updateWeatherData(String domainName, String apiKey, double l
   }
   
   // We now create a URI for the request
-  String url = "http://" + domainName + "/weather.php?apiKey=" + apiKey + "&lat=" + String(lat) + "&lon=" + String(lon) + "&units=" + myUnits;
+  String url = "http://" + domainName + ":" + httpPort + "/weather.php?apiKey=" + apiKey + "&lat=" + String(lat) + "&lon=" + String(lon) + "&units=" + myUnits;
 
   Serial.print("Requesting URL: ");
   Serial.println(url);

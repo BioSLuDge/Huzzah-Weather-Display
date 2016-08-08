@@ -91,7 +91,7 @@ void setup() {
   //ESP.wdtDisable();
 
   // initialize display
-  display.init(false);
+  display.init(true);
   display.flipScreenVertically();
   // set the drawing functions
   display.setFrameCallbacks(3, frameCallbacks);
